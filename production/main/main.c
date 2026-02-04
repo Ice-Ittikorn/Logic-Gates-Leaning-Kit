@@ -1,14 +1,12 @@
 #include "logic_gate.h"
 #include "esp_log.h"
-
-static const char *TAG = "PROD";
+#include "wifi.h"
 
 void app_main(void)
 {
-    int a = 1;
-    int b = 0;
+    ESP_LOGI("main", "Starting application");
 
-    ESP_LOGI(TAG, "AND = %d", logic_and(a, b));
-    ESP_LOGI(TAG, "OR  = %d", logic_or(a, b));
-    ESP_LOGI(TAG, "NOT = %d", logic_not(a));
+    wifi_init_sta();
+
+    ESP_LOGI("main", "WiFi connected, app ready");
 }
