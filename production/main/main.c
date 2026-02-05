@@ -23,17 +23,22 @@ void setup (void)
 
     // LCD
     lcd_init();
-    Lcd_print(0, 0, " ");
-    Lcd_print(0, 1, " ");
-    VTaskDelay(500 / portTICK_PERIOD_MS);
+    Lcd_print(0, 0, "                ");
+    Lcd_print(0, 1, "                ");
+    vTaskDelay(pdMS_TO_TICKS(500));
     Lcd_print(1, 0, "E Logic Board");
     Lcd_print(0, 1, "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -"); 
-    vTaskDelay(pdMS_TO_TICKS(500));
+    vTaskDelay(pdMS_TO_TICKS(2000));
 }
 
 
 void app_main(void)
 {
     setup();
+    while (1) {
+        // code ที่ต้องการให้วน
+        vTaskDelay(pdMS_TO_TICKS(1000));
+        Lcd_print(1, 0, "Hello, Logic Gate!");
+    }
 }
 
