@@ -1,14 +1,15 @@
 #include "logic_gate.h"
 #include "esp_log.h"
-
-static const char *TAG = "PROD";
+#include "lcd_i2c.h"
 
 void app_main(void)
 {
-    int a = 1;
-    int b = 0;
+    lcd_init();
 
-    ESP_LOGI(TAG, "AND = %d", logic_and(a, b));
-    ESP_LOGI(TAG, "OR  = %d", logic_or(a, b));
-    ESP_LOGI(TAG, "NOT = %d", logic_not(a));
+    // เหมือน Arduino:
+    // lcd.setCursor(0,0); lcd.print("Hello");
+    Lcd_print(0, 0, "Hello ESP32");
+
+    // lcd.setCursor(0,1); lcd.print("I2C LCD");
+    Lcd_print(0, 1, "I2C LCD");
 }
