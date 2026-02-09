@@ -27,28 +27,22 @@ void wifi_sta (void)
     //WIFI_STATUS = WIFI_STATUS_NO_SSID ไม่พบ SSID
 }
 
-#include "esp_log.h"
-#include "nvs_flash.h"
 #include "wifi_ap.h"
 #include "web_server.h"
+#include "esp_log.h"
 
 static const char *TAG = "MAIN";
 
 void app_main(void)
 {
-    /* NVS */
-    ESP_ERROR_CHECK(nvs_flash_init());
-
-    /* WiFi AP */
     wifi_ap_start();
-
-    /* 🔥 SPIFFS MUST BE HERE */
-    spiffs_init();
-
-    /* Web Server */
     web_server_start();
 
-    ESP_LOGI(TAG, "System ready");
+    ESP_LOGI(TAG, "ESP32 AP SSID = %s", ESP_AP_SSID);
+    ESP_LOGI(TAG, "ESP32 AP PASS = %s", ESP_AP_PASS);
+
+    ESP_LOGI(TAG, "FORM SSID = %s", g_wifi_ssid);
+    ESP_LOGI(TAG, "FORM PASS = %s", g_wifi_pass);
 }
 
 void tt(void)
