@@ -6,13 +6,11 @@
 #include "freertos/task.h"
 #include "led_status.h"
 
-
 void setup (void)
 {
     led_status_init();
     Lcd_setup();
 }
-
 
 void app_main(void)
 {
@@ -21,7 +19,6 @@ void app_main(void)
     Lcd_print(0, 1, " Welcome to ELK ");
     
     while (1) {
-
         led_status_set(LED_RED);
         vTaskDelay(pdMS_TO_TICKS(1000));
         led_status_set(LED_GREEN);
