@@ -31,28 +31,20 @@ void wifi_sta (void)
 
 
 
-static const char *TAG = "MAIN";
+
 
 void app_main(void)
 {
-    esp_err_t ret = nvs_flash_init();
-    if (ret == ESP_ERR_NVS_NO_FREE_PAGES ||
-        ret == ESP_ERR_NVS_NEW_VERSION_FOUND) {
-        ESP_ERROR_CHECK(nvs_flash_erase());
-        ESP_ERROR_CHECK(nvs_flash_init());
-    }
-
-    wifi_ap_start("ESP32_TEST_1234", "");
-
+    wifi_ap_start("ESP32_CONFIG", "");
     web_server_start();
 
-    ESP_LOGI(TAG, "WiFi AP started, IP: " IPSTR,
-             IP2STR(&wifi_ap_ip));
+    ESP_LOGI("MAIN", "AP IP: " IPSTR, IP2STR(&wifi_ap_ip));
 
     while (1) {
         if (wifi_credential_received) {
-            ESP_LOGI(TAG, "SSID: %s", wifi_ssid);
-            ESP_LOGI(TAG, "PASS: %s", wifi_pass);
+            ESP_LOGI("MAIN", "Got SSID=%s PASS=%s", wifi_ssid, wifi_pass);
+            // 👉 ต่อ STA / save NVS / reboot ได้ตรงนี้
+            wifi_credential_received = false;
         }
         vTaskDelay(pdMS_TO_TICKS(500));
     }
