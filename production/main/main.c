@@ -28,28 +28,21 @@ void wifi_sta (void)
 }
 
 
+#include <stdio.h>
 
+#include "esp_log.h"
+#include "nvs_flash.h"
 
-
-
+#include "wifi_ap.h"
+#include "web_server.h"
 
 
 void app_main(void)
 {
-    wifi_ap_start("ESP32_CONFIG", "");
+    wifi_ap_start("Esp32_Demo", "");
     web_server_start();
 
     ESP_LOGI("MAIN", "AP IP: " IPSTR, IP2STR(&wifi_ap_ip));
-
-    while (1) {
-        if (wifi_credential_received) {
-            ESP_LOGI("MAIN", "SSID=%s PASS=%s", wifi_ssid, wifi_pass);
-
-            // 👉 ตรงนี้เอาไปต่อ Wifi_STA / save NVS / reboot
-            wifi_credential_received = false;
-        }
-        vTaskDelay(pdMS_TO_TICKS(5000));
-    }
 }
 
 void tt(void)
