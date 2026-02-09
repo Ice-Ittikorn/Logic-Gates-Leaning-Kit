@@ -7,9 +7,9 @@
 #include "driver/gpio.h"
 
 // ===== GPIO =====
-#define LED_R GPIO_NUM_25
-#define LED_G GPIO_NUM_26
-#define LED_B GPIO_NUM_27
+#define LED_R GPIO_NUM_19
+#define LED_G GPIO_NUM_18
+#define LED_B GPIO_NUM_23
 
 void setup (void)
 {
@@ -27,7 +27,7 @@ void setup (void)
     Lcd_print(0, 1, "                ");
     vTaskDelay(pdMS_TO_TICKS(500));
     Lcd_print(1, 0, "E Logic Board");
-    Lcd_print(0, 1, "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -"); 
+    Lcd_print(0, 1, "----------------"); 
     vTaskDelay(pdMS_TO_TICKS(2000));
 }
 
@@ -38,7 +38,21 @@ void app_main(void)
     while (1) {
         // code ที่ต้องการให้วน
         vTaskDelay(pdMS_TO_TICKS(1000));
-        Lcd_print(1, 0, "Hello, Logic Gate!");
+        Lcd_print(0, 0, "Hello LogicGate!");
+        Lcd_print(0, 1, " Welcome to ELK ");
+        gpio_set_level(LED_R, 1);
+        gpio_set_level(LED_G, 0);
+        gpio_set_level(LED_B, 0);
+        vTaskDelay(pdMS_TO_TICKS(1000));
+        gpio_set_level(LED_R, 0);
+        gpio_set_level(LED_G, 1);
+        gpio_set_level(LED_B, 0);
+        vTaskDelay(pdMS_TO_TICKS(1000));
+        gpio_set_level(LED_G, 0);
+        gpio_set_level(LED_B, 0);
+        gpio_set_level(LED_B, 1);
+        vTaskDelay(pdMS_TO_TICKS(1000));
+
     }
 }
 
