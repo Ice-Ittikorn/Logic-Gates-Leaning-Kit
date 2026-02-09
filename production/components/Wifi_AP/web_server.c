@@ -1,6 +1,8 @@
 #include "web_server.h"
+
 #include "esp_http_server.h"
 #include "esp_log.h"
+#include "esp_spiffs.h"
 #include <string.h>
 
 static const char *TAG = "WEB";
@@ -9,36 +11,51 @@ char wifi_ssid[32];
 char wifi_pass[64];
 bool wifi_credential_received = false;
 
-/* HTML */
-static const char *html_page =
-"<!DOCTYPE html>"
-"<html><head>"
-"<link rel='stylesheet' href='/style.css'>"
-"</head><body>"
-"<h2>ESP32 WiFi Setup</h2>"
-"<form method='POST' action='/wifi'>"
-"SSID:<br><input name='ssid'><br>"
-"Password:<br><input name='pass' type='password'><br><br>"
-"<button type='submit'>Save</button>"
-"</form>"
-"</body></html>";
-
-/* CSS */
-static const char *css_page =
-"body{font-family:sans-serif;background:#111;color:#0f0;text-align:center;}"
-"input{padding:6px;margin:4px;}";
-
-static esp_err_t root_get(httpd_req_t *req)
+/* ---------- SPIFFS ---------- */
+static void spiffs_init(void)
 {
-    httpd_resp_send(req, html_page, HTTPD_RESP_USE_STRLEN);
+    esp_vfs_spiffs_conf_t conf = {
+        .base_path = "/spiffs",
+        .partition_label = NULL,
+        .max_files = 5,
+        .format_if_mount_failed = true
+    };
+
+    ESP_ERROR_CHECK(esp_vfs_spiffs_register(&conf));
+    ESP_LOGI(TAG, "SPIFFS mounted");
+}
+
+/* ---------- File sender ---------- */
+static esp_err_t send_file(httpd_req_t *req, const char *path, const char *type)
+{
+    FILE *f = fopen(path, "r");
+    if (!f) {
+        httpd_resp_send_404(req);
+        return ESP_FAIL;
+    }
+
+    httpd_resp_set_type(req, type);
+
+    char buf[256];
+    size_t len;
+    while ((len = fread(buf, 1, sizeof(buf), f)) > 0) {
+        httpd_resp_send_chunk(req, buf, len);
+    }
+
+    fclose(f);
+    httpd_resp_send_chunk(req, NULL, 0);
     return ESP_OK;
+}
+
+/* ---------- Handlers ---------- */
+static esp_err_t index_get(httpd_req_t *req)
+{
+    return send_file(req, "/spiffs/index.html", "text/html");
 }
 
 static esp_err_t css_get(httpd_req_t *req)
 {
-    httpd_resp_set_type(req, "text/css");
-    httpd_resp_send(req, css_page, HTTPD_RESP_USE_STRLEN);
-    return ESP_OK;
+    return send_file(req, "/spiffs/style.css", "text/css");
 }
 
 static esp_err_t wifi_post(httpd_req_t *req)
@@ -64,15 +81,18 @@ static esp_err_t wifi_post(httpd_req_t *req)
     return ESP_OK;
 }
 
+/* ---------- Start server ---------- */
 void web_server_start(void)
 {
-    httpd_handle_t server = NULL;
+    spiffs_init();
+
     httpd_config_t cfg = HTTPD_DEFAULT_CONFIG();
+    httpd_handle_t server = NULL;
 
     ESP_ERROR_CHECK(httpd_start(&server, &cfg));
 
     httpd_register_uri_handler(server, &(httpd_uri_t){
-        .uri="/", .method=HTTP_GET, .handler=root_get});
+        .uri="/", .method=HTTP_GET, .handler=index_get});
 
     httpd_register_uri_handler(server, &(httpd_uri_t){
         .uri="/style.css", .method=HTTP_GET, .handler=css_get});

@@ -2,18 +2,20 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>WiFi Setup</title>
+  <title>ESP32 WiFi Setup</title>
   <link rel="stylesheet" href="/style.css">
 </head>
 <body>
-  <div class="card">
-    <h2>WiFi Setup</h2>
+  <h2>WiFi Configuration</h2>
 
-    <form action="/wifi" method="post">
-      <input type="text" name="ssid" placeholder="WiFi SSID" required>
-      <input type="password" name="password" placeholder="WiFi Password">
-      <button type="submit">Save</button>
-    </form>
-  </div>
+  <form method="POST" action="/wifi">
+    <label>SSID</label><br>
+    <input type="text" name="ssid"><br><br>
+
+    <label>Password</label><br>
+    <input type="password" name="pass"><br><br>
+
+    <button type="submit">Save</button>
+  </form>
 </body>
 </html>

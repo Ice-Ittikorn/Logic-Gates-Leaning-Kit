@@ -33,6 +33,7 @@ void wifi_sta (void)
 
 
 
+
 void app_main(void)
 {
     wifi_ap_start("ESP32_CONFIG", "");
@@ -42,11 +43,12 @@ void app_main(void)
 
     while (1) {
         if (wifi_credential_received) {
-            ESP_LOGI("MAIN", "Got SSID=%s PASS=%s", wifi_ssid, wifi_pass);
-            // 👉 ต่อ STA / save NVS / reboot ได้ตรงนี้
+            ESP_LOGI("MAIN", "SSID=%s PASS=%s", wifi_ssid, wifi_pass);
+
+            // 👉 ตรงนี้เอาไปต่อ Wifi_STA / save NVS / reboot
             wifi_credential_received = false;
         }
-        vTaskDelay(pdMS_TO_TICKS(500));
+        vTaskDelay(pdMS_TO_TICKS(5000));
     }
 }
 
