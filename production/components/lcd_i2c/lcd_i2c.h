@@ -2,7 +2,7 @@
 #include <stdint.h>
 
 /* เรียกครั้งเดียวตอนเริ่ม */
-void lcd_init(void);
+void Lcd_setup(void);
 
 /*
  * แสดงข้อความบน LCD

@@ -76,3 +76,14 @@ void Lcd_print(uint8_t position, uint8_t line, const char *text)
         lcd_data((uint8_t)*text++);
     }
 }
+
+void Lcd_setup(void)
+{
+    lcd_init();
+    Lcd_print(0, 0, "                ");
+    Lcd_print(0, 1, "                ");
+    vTaskDelay(pdMS_TO_TICKS(500));
+    Lcd_print(1, 0, "E Logic Board");
+    Lcd_print(0, 1, "----------------"); 
+    vTaskDelay(pdMS_TO_TICKS(2000));
+}
