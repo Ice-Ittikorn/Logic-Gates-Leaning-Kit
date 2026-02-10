@@ -10,3 +10,15 @@ idf.py flash
 idf.py spiffsgen
 idf.py flash monitor
 ```
+
+
+ESP_LOGI(TAG, "ESP32 AP SSID = %s", ESP_AP_SSID);
+ESP_LOGI(TAG, "ESP32 AP PASS = %s", ESP_AP_PASS);
+
+ESP_LOGI(TAG, "FORM Client = %s", WIFI_AP_CLIENT_IP);
+
+ESP_LOGI(TAG, "FORM SSID = %s", g_wifi_ssid);
+ESP_LOGI(TAG, "FORM PASS = %s", g_wifi_pass);
+
+
+    

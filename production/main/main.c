@@ -25,16 +25,19 @@ void wifi_ap (void)
     wifi_ap_start();
     web_server_start();
 
-    ESP_LOGI(TAG, "ESP32 AP SSID = %s", ESP_AP_SSID);
-    ESP_LOGI(TAG, "ESP32 AP PASS = %s", ESP_AP_PASS);
-
     ESP_LOGI(TAG, "FORM SSID = %s", g_wifi_ssid);
     ESP_LOGI(TAG, "FORM PASS = %s", g_wifi_pass);
 
-    sprintf(lcd_buf, "%-14s", "SSID : " ESP_AP_SSID); //จัดรูปแบบความยาว 16 ตัวอักษร
+    sprintf(lcd_buf, "%-16s", "SSID : " ESP_AP_SSID); //จัดรูปแบบความยาว 16 ตัวอักษร
     Lcd_print(0, 0, lcd_buf);
-    sprintf(lcd_buf, "%-14s", "Pass : " ESP_AP_PASS); 
+    sprintf(lcd_buf, "%-16s", "Pass : " ESP_AP_PASS); 
     Lcd_print(0, 1, lcd_buf);
+
+    if (strcmp(WIFI_CLIENT_IP, "0.0.0.0") != 0) {
+        //เช็คส่าถูกมั้ยดดยการใส่ log
+        Lcd_print(0, 0, " Please connect ");
+        Lcd_print(0, 1, "IP : 192.168.4.1");
+    } // เพิ่ม loop เช็คการเชื่อมต่อของ client เบรกตอนได้  ESP_AP_SSID และ ESP_AP_PASS 
 }
 
 void wifi_sta (void)
