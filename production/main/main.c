@@ -31,39 +31,38 @@ void wifi_ap (void)
     ESP_LOGI(TAG, "FORM SSID = %s", g_wifi_ssid);
     ESP_LOGI(TAG, "FORM PASS = %s", g_wifi_pass);
 
-    sprintf(lcd_buf, "SSID:%s", ESP_AP_SSID);
+    sprintf(lcd_buf, "%-14s", "SSID : " ESP_AP_SSID); //จัดรูปแบบความยาว 16 ตัวอักษร
     Lcd_print(0, 0, lcd_buf);
-    sprintf(lcd_buf, "Pass:%s", ESP_AP_PASS);
+    sprintf(lcd_buf, "%-14s", "Pass : " ESP_AP_PASS); 
     Lcd_print(0, 1, lcd_buf);
 }
 
 void wifi_sta (void)
 {
-    while (1){
-        Lcd_print(0, 0, "CONNECTING .    ");
-        Lcd_print(0, 1, "  Please  wait  ");
-        led_status_set(LED_BLUE);
-        vTaskDelay(pdMS_TO_TICKS(500));
-        Lcd_print(0, 0, "CONNECTING . .  ");
-        led_status_set(LED_OFF);
-        vTaskDelay(pdMS_TO_TICKS(500));
-        Lcd_print(0, 0, "CONNECTING . . .");
-        led_status_set(LED_BLUE);
-        vTaskDelay(pdMS_TO_TICKS(500));
-        Lcd_print(0, 0, "CONNECTING      ");
-        led_status_set(LED_OFF);
-        vTaskDelay(pdMS_TO_TICKS(500));
-    }
-    // wifi_setup("ssid","password");
-
+    wifi_setup("ssid","password");
     // WIFI_STATUS_SUCCESS
     // WIFI_STATUS_WRONG_PASSWORD
     // WIFI_STATUS_NO_SSID
 }
 
+
 void app_main(void)
 {
     setup();
-    wifi_sta();
-    //wifi_ap();
+    wifi_ap();
+}
+
+
+void connect_text( char *x)
+{
+    const char *connec_txt[] = {"CONNECTING .    ","CONNECTING . .  ","CONNECTING . . .","CONNECTING      "};
+    while (1) {
+        for (int i = 0; i < 4; i++) {
+            Lcd_print(0, 0, connec_txt[i]);
+            Lcd_print(0, 1, "  Please  wait  ");
+
+            led_status_set(i % 2 ? LED_OFF : LED_BLUE);
+            vTaskDelay(pdMS_TO_TICKS(500));
+        }
+    }
 }

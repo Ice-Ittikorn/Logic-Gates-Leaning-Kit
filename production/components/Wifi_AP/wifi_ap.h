@@ -1,7 +1,7 @@
 #pragma once
 #include "esp_netif.h"
 
-#define ESP_AP_SSID "ESP32_CONFIG"
+#define ESP_AP_SSID "ESP_0001"
 #define ESP_AP_PASS "12345678"
 
 void wifi_ap_start(void);
