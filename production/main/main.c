@@ -34,7 +34,7 @@ void wifi_ap (void)
     Lcd_print(0, 1, lcd_buf);
 
     if (strcmp(WIFI_CLIENT_IP, "0.0.0.0") != 0) {
-        //เช็คส่าถูกมั้ยดดยการใส่ log
+        ESP_LOGI(TAG, "IP Clinet  = %s", WIFI_CLIENT_IP);
         Lcd_print(0, 0, " Please connect ");
         Lcd_print(0, 1, "IP : 192.168.4.1");
     } // เพิ่ม loop เช็คการเชื่อมต่อของ client เบรกตอนได้  ESP_AP_SSID และ ESP_AP_PASS 
