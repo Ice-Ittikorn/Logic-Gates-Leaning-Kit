@@ -33,8 +33,7 @@ static esp_err_t send_file(httpd_req_t *req, const char *path, const char *type)
 static esp_err_t root_get(httpd_req_t *req)
 {
     ESP_LOGI(TAG, "GET /");
-    return send_file(req, "/spiffs/from.html", "text/html");
-}
+    return send_file(req, "/spiffs/form.html", "text/html");}
 
 /* GET /style.css */
 static esp_err_t css_get(httpd_req_t *req)

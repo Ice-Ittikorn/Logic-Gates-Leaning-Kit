@@ -4,4 +4,4 @@ include($ENV{IDF_PATH}/tools/cmake/project.cmake)
 project(production)
 
 # === SPIFFS ===
-spiffs_create_partition_image(spiffs spiffs FLASH_IN_PROJECT)
+spiffs_create_partition_image(spiffs ${CMAKE_SOURCE_DIR}/spiffs FLASH_IN_PROJECT)
