@@ -43,11 +43,6 @@ static void wifi_ap_event_handler(void *arg,esp_event_base_t event_base,int32_t 
 
 void wifi_ap_start(void)
 {
-    /* init system */
-    nvs_flash_init();
-    esp_netif_init();
-    esp_event_loop_create_default();
-
     /* register events */
     esp_event_handler_register(WIFI_EVENT, ESP_EVENT_ANY_ID,
                                &wifi_ap_event_handler, NULL);
@@ -56,10 +51,6 @@ void wifi_ap_start(void)
 
     /* create AP netif */
     esp_netif_t *ap_netif = esp_netif_create_default_wifi_ap();
-
-    /* init wifi */
-    wifi_init_config_t cfg = WIFI_INIT_CONFIG_DEFAULT();
-    esp_wifi_init(&cfg);
 
     /* AP config */
     wifi_config_t wifi_config = {
