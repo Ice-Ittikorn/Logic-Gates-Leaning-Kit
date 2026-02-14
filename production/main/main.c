@@ -56,15 +56,15 @@ void wifi_ap (void)
 void wifi_sta (void)
 {
     wifi_setup(g_wifi_ssid,g_wifi_pass);
-    
+
      while (1) {
+        ESP_LOGI(TAG, "WiFi Status = %d", WIFI_STATUS);
         if (WIFI_STATUS == WIFI_STATUS_SUCCESS) {
             led_status_set(LED_GREEN);  
         }
         vTaskDelay(pdMS_TO_TICKS(500));
     }
 }
-
 
 void app_main(void)
 {
