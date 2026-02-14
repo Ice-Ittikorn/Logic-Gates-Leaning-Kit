@@ -33,11 +33,14 @@ void wifi_ap (void)
     sprintf(lcd_buf, "%-16s", "Pass : " ESP_AP_PASS); 
     Lcd_print(0, 1, lcd_buf);
 
-    if (strcmp(WIFI_CLIENT_IP, "0.0.0.0") != 0) {
-        ESP_LOGI(TAG, "IP Clinet  = %s", WIFI_CLIENT_IP);
-        Lcd_print(0, 0, " Please connect ");
-        Lcd_print(0, 1, "IP : 192.168.4.1");
-    } // เพิ่ม loop เช็คการเชื่อมต่อของ client เบรกตอนได้  ESP_AP_SSID และ ESP_AP_PASS 
+    while (strlen(g_wifi_ssid) == 0 || strlen(g_wifi_pass) == 0) {
+        if (strcmp(WIFI_CLIENT_IP, "0.0.0.0") != 0) {
+            Lcd_print(0, 0, " Please connect ");
+            Lcd_print(0, 1, "IP : 192.168.4.1");
+        } // เช็คว่ามี g_wifi_ssid g_wifi_pass มายัง
+    // ap down
+    }
+    
 }
 
 void wifi_sta (void)
@@ -53,19 +56,7 @@ void app_main(void)
 {
     setup();
     wifi_ap();
+    wifi_sta();
 }
 
 
-void connect_text( char *x)
-{
-    const char *connec_txt[] = {"CONNECTING .    ","CONNECTING . .  ","CONNECTING . . .","CONNECTING      "};
-    while (1) {
-        for (int i = 0; i < 4; i++) {
-            Lcd_print(0, 0, connec_txt[i]);
-            Lcd_print(0, 1, "  Please  wait  ");
-
-            led_status_set(i % 2 ? LED_OFF : LED_BLUE);
-            vTaskDelay(pdMS_TO_TICKS(500));
-        }
-    }
-}

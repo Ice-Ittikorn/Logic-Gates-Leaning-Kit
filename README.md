@@ -22,3 +22,17 @@ ESP_LOGI(TAG, "FORM PASS = %s", g_wifi_pass);
 
 
     
+
+void connect_text( char *x)
+{
+    const char *connec_txt[] = {"CONNECTING .    ","CONNECTING . .  ","CONNECTING . . .","CONNECTING      "};
+    while (1) {
+        for (int i = 0; i < 4; i++) {
+            Lcd_print(0, 0, connec_txt[i]);
+            Lcd_print(0, 1, "  Please  wait  ");
+
+            led_status_set(i % 2 ? LED_OFF : LED_BLUE);
+            vTaskDelay(pdMS_TO_TICKS(500));
+        }
+    }
+}
