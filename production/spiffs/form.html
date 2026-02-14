@@ -1,26 +1,43 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="th">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>E-Logic-Board</title>
-  <link rel="stylesheet" href="/style.css">
 </head>
 <body>
 
-  <h1>E-Logic-Board</h1>
+<h1>E-Logic-Board</h1>
 
-  <form action="/Success" method="post">
+<label>SSID</label>
+<input id="ssid" type="text" placeholder="เช่น บ้านฉัน">
 
-    <label>SSID</label>
-    <input name="ssid" type="text" placeholder="เช่น MyWiFi" required>
+<label>Password</label>
+<input id="pass" type="password" placeholder="รหัสผ่าน">
 
-    <label>Password</label>
-    <input name="pass" type="password" placeholder="กรอกรหัสผ่าน">
+<button onclick="sendData()">ยืนยัน</button>
 
-    <button type="submit">ยืนยัน</button>
+<script>
+function sendData() {
 
-  </form>
+  const data = {
+    ssid: document.getElementById("ssid").value,
+    pass: document.getElementById("pass").value
+  };
+
+  fetch("/Success", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(data)
+  })
+  .then(response => {
+    if (response.ok) {
+      window.location.href = "/success.html";
+    }
+  });
+}
+</script>
 
 </body>
 </html>

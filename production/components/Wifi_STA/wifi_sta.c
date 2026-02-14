@@ -53,17 +53,10 @@ void wifi_setup(const char *ssid, const char *password)
 
     wifi_config_t wifi_config = {0};
 
-    // copy ssid/password ลง buffer
     strncpy((char *)wifi_config.sta.ssid, ssid,
-            sizeof(wifi_config.sta.ssid) - 1);
+            sizeof(wifi_config.sta.ssid));
     strncpy((char *)wifi_config.sta.password, password,
-            sizeof(wifi_config.sta.password) - 1);
-
-    // แปลง + เป็น space (กรณีมาจาก web form)
-    for (int i = 0; wifi_config.sta.ssid[i]; i++) {
-        if (wifi_config.sta.ssid[i] == '+')
-            wifi_config.sta.ssid[i] = ' ';
-    }
+            sizeof(wifi_config.sta.password));
 
     esp_wifi_set_mode(WIFI_MODE_STA);
     esp_wifi_set_config(WIFI_IF_STA, &wifi_config);
